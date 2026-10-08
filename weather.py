@@ -34,6 +34,9 @@ def get_coordinates(city):
     
     data = response.json()
 
+    if "results" not in data:
+        return None
+
     latitude = data["results"][0]["latitude"]
     longitude = data["results"][0]["longitude"]
     return latitude, longitude
@@ -61,12 +64,12 @@ def get_current_weather(lat, lon):
     return temperature, weather_code
 
 
+coordinates = get_coordinates(city)
 
-
-
-
-lat, lon = get_coordinates(city)
-temperature_2m, weather_code = get_current_weather(lat, lon)
-
-print(f"city: {city}")
-print(f"temperature: {temperature_2m} and code: {weather_code}")
+if coordinates is None:
+    print("City not found")
+else: 
+    lat, lon = coordinates
+    temperature_2m, weather_code = get_current_weather(lat, lon)
+    print(f"city: {city}")
+    print(f"temperature: {temperature_2m} and code: {weather_code}")
