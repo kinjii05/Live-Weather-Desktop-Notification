@@ -1,4 +1,5 @@
 import requests
+from weather_codes import wmo
 
 
 
@@ -64,12 +65,20 @@ def get_current_weather(lat, lon):
     return temperature, weather_code
 
 
+
+
+
+
+
 coordinates = get_coordinates(city)
+
+
 
 if coordinates is None:
     print("City not found")
 else: 
     lat, lon = coordinates
     temperature_2m, weather_code = get_current_weather(lat, lon)
+    weather_code = wmo.get()
     print(f"city: {city}")
     print(f"temperature: {temperature_2m} and code: {weather_code}")
