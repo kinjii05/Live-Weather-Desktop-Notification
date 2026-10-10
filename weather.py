@@ -79,6 +79,6 @@ if coordinates is None:
 else: 
     lat, lon = coordinates
     temperature_2m, weather_code = get_current_weather(lat, lon)
-    weather_code = wmo.get()
+    weather_str = wmo.get(weather_code, "Unknown")
     print(f"city: {city}")
-    print(f"temperature: {temperature_2m} and code: {weather_code}")
+    print(f"temperature: {temperature_2m} and code: {weather_str}")
