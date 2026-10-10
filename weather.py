@@ -1,6 +1,7 @@
 import requests
 from weather_codes import wmo
-
+from plyer import notification
+import time
 
 
 
@@ -22,8 +23,8 @@ city = input("For which City would you like to know the Weather? ")
 def get_coordinates(city):
     
     params = {
-    "name" : city,
-    "count" : 1
+        "name" : city,
+        "count" : 1
     }
 
 
@@ -65,20 +66,25 @@ def get_current_weather(lat, lon):
     return temperature, weather_code
 
 
-
-
-
-
-
 coordinates = get_coordinates(city)
 
-
-
 if coordinates is None:
-    print("City not found")
+    notification.notify(
+        title = "City couldn't be found",
+        message = f"Are you sure you searched for {city}?",
+        timeout = 5
+    )
 else: 
     lat, lon = coordinates
-    temperature_2m, weather_code = get_current_weather(lat, lon)
-    weather_str = wmo.get(weather_code, "Unknown")
-    print(f"city: {city}")
-    print(f"temperature: {temperature_2m} and code: {weather_str}")
+    try:
+        while True:
+            temperature_2m, weather_code = get_current_weather(lat, lon)
+            weather_str = wmo.get(weather_code, "Unknown")
+            notification.notify(
+                title = f"Weather in {city}",
+                message = f"Current condition: {temperature_2m} °C, {weather_str}",
+                timeout = 5
+            ) 
+            time.sleep(1800)
+    except KeyboardInterrupt:
+        print("Stopped")
